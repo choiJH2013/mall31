@@ -36,11 +36,10 @@
 	
 	</resultMap>
 
-	<!-- join 쿼리문 -->
+	<!-- join쿼리문 / categoryNo조건 / 쿼리문 결과값 1:N -->
 	<select id="selectProductCommonByCategory"
 			parameterType="int"
 			resultMap="ProductCommonMap">
-			
 		SELECT
 			pc.product_common_no,
 			pc.category_no,
@@ -59,7 +58,8 @@
 			product AS p
 		ON 
 			pc.product_common_no = p.product_common_no
-			
+		WHERE
+			pc.product_common_no = #{productCommonNo}
 	</select>
     
     <!-- 1 페이징,검색(이름), -->

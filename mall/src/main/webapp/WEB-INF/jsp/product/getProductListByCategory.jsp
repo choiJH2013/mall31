@@ -36,7 +36,11 @@
 		                <tr>   
 		                    <td>${list.productCommonNo}</td>
 		                    <td>${list.categoryNo}</td>
-		                    <td>${list.productCommonName}</td>
+		                    <td>
+		                    	<a href="${pageContext.request.contextPath}/priduct/getProductOne?${list.productCommonNo}">
+		                    		${list.productCommonName}
+		                    	</a>
+		                    </td>
 		                    <td>${list.productCommonPrice}</td>
 		                    <td>${list.productCommonDescription}</td>
 		                    <td>${list.productCommonDate}</td>
@@ -47,34 +51,24 @@
 		    </table>
 	    </form>
 	    											<!-- form안에 hidden으로 넘기는방법도있따 -->
-	    <form id="searchForm" action="${pageContext.request.contextPath}/product/getProductListByCategory?categoryNo=${categoryNo}" method="get">
-	    	productName 검색어 : <input type="text" name="searchWord">
-	    	<button id="searchBtn" type="button">검색</button>
-	    </form>
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    <ul>
+		<form id="searchForm"
+			action="${pageContext.request.contextPath}/product/getProductListByCategory"
+			method="get">
+			productName 검색어 : <input type="text" name="searchWord">
+			<button id="searchBtn" type="button">검색</button>
+		</form>
+
+		<ul>
 	        <c:if test="${currentPage > 1}">
 	            <li>
-	            	<a href="${pageContext.request.contextPath}/product/getProductListByCategory?category=${list.categoryNo}&currentPage=${currentPage-1}">
+	            	<a href="${pageContext.request.contextPath}/product/getProductListByCategory?currentPage=${currentPage-1}">
 	            	이전	            
 	            	</a>
 	            </li>
 	        </c:if>
 	        <c:if test="${currentPage < lastPage}">
 	            <li>
-	            	<a href="${pageContext.request.contextPath}/product/getProductListByCategory?category=${list.categoryNo}&currentPage=${currentPage+1}">
+	            	<a href="${pageContext.request.contextPath}/product/getProductListByCategory?currentPage=${currentPage+1}">
 	            	다음
 	            	</a>
 	            </li>
