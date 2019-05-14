@@ -1,0 +1,255 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cafe.jjdev.mall.mapper.MemberMapper">
+	
+	<update id="emailUpdateUupw"
+			parameterType="cafe.jjdev.mall.vo.Member">
+		UPDATE
+				member 
+		SET
+				member_pw = #{memberPw}
+		WHERE
+				member_id = #{memberId} 
+				
+    </update>
+
+	<select id="selectEmail"
+		parameterType="cafe.jjdev.mall.vo.Member"
+		resultType="cafe.jjdev.mall.vo.Member">
+	
+		SELECT 
+			member_email as memberEmail
+			
+		FROM 
+			member
+		WHERE 
+			member_name = #{memberName}
+		AND
+			member_id = #{memberId}
+		AND
+			member_email = #{memberEmail}
+	
+	</select>
+	
+	<!-- 비밀번호 찾기 매서드  전화번호로 찾기 방법 or 이메일로 찾기 방법-->
+	<select id="searchMemberPw"
+		parameterType="cafe.jjdev.mall.vo.Member"
+		resultType="cafe.jjdev.mall.vo.Member">
+	
+		SELECT
+			member_id as memberId,
+			member_name as memberName,
+			member_pw as memberPw
+		FROM
+			member
+		WHERE
+		
+			member_name = #{memberName}
+		AND
+			member_phone = #{memberPhone}
+		AND
+			member_id = #{memberId}
+			
+		OR
+		
+			member_name = #{memberName}
+		AND
+			member_email = #{memberEmail}
+		AND
+			member_id = #{memberId}
+
+	</select>
+	
+	<!-- 아이디 찾기 매서드 -->
+	<select id="searchMemberId"
+			parameterType="cafe.jjdev.mall.vo.Member"
+			resultType="cafe.jjdev.mall.vo.Member">
+			
+		SELECT 
+			member_id as memberId,
+			member_name as memberName
+			
+		FROM 
+			member
+		WHERE 
+			member_name = #{memberName}
+		AND
+			member_phone = #{memberPhone}
+	
+	</select>
+	
+	<!-- 회원탈퇴시 보관용 매서드 -->
+	<insert id="insertUserId"
+			parameterType="cafe.jjdev.mall.vo.UserId">
+		INSERT
+		INTO
+			user(
+			user_id,
+			user_gender,
+			user_date
+			)VALUES(
+			#{userId},
+			#{userGender},
+			now()
+			)
+	</insert>
+	
+	<!-- 회원삭제 매서드 -->
+	<delete id="deleteMember"
+			parameterType="cafe.jjdev.mall.vo.Member">
+		DELETE
+		FROM 
+			member
+		WHERE
+			member_id = #{memberId}
+		AND	
+			member_pw = #{memberPw}
+	</delete>
+
+	<!-- 회원정보수정 매서드 -->
+	<update id="getUpdateMember"
+			parameterType="cafe.jjdev.mall.vo.Member">
+		UPDATE
+				member 
+		SET
+				member_name = #{memberName},
+				member_phone = #{memberPhone},
+				member_address = #{memberAddress},
+				member_email = #{memberEmail}
+		WHERE
+				member_id = #{memberId} 
+		AND
+				member_pw = #{memberPw}
+    </update>
+
+	<!-- 비밀번호 변경 매서드 -->
+	<update id="getMemberUpdatePw"
+			parameterType="cafe.jjdev.mall.vo.Member">
+		UPDATE
+				member 
+		SET
+				member_pw = #{memberUpdatePw}
+		WHERE
+				member_id = #{memberId} 
+		AND
+				member_pw = #{memberPw}
+				
+    </update>
+    
+    <!-- 비밀번호 변경하기위해 밑작업 매서드 -->
+	<select id="selectUpdate"
+			parameterType="cafe.jjdev.mall.vo.Member"
+			resultType="cafe.jjdev.mall.vo.Member">
+			
+	   	SELECT 
+			member_id as memberId,
+			member_pw as memberPw
+			
+		FROM 
+			member
+		WHERE 
+			member_id = #{memberId}
+		AND
+			member_pw = #{memberPw}
+	
+	</select>
+
+	<!-- 상세정보 매서드 -->
+	<select id="getMemberOne"
+			parameterType="String"
+			resultType="cafe.jjdev.mall.vo.Member">
+			
+	   	SELECT 
+			member_id as memberId,
+			member_pw as memberPw,
+			member_name as memberName,
+			member_phone as memberPhone,
+			member_address as memberAddress,
+			member_gender as memberGender,
+			member_level as memberLevel,
+			member_email as memberEmail
+			
+		FROM 
+			member
+		WHERE 
+			member_id = #{memberId}
+	
+	</select>
+
+	<!-- 회원가입 매서드 -->
+    <insert id="insertMember" 
+    		parameterType="cafe.jjdev.mall.vo.Member">
+  			
+        INSERT INTO member(
+			member_id,
+			member_pw,
+			member_name,
+			member_phone,
+			member_address,
+			member_gender,
+			member_level,
+			member_email
+				
+        )
+        VALUES(
+			#{memberId},
+            #{memberPw},
+            #{memberName},
+            #{memberPhone},
+			#{memberAddress},
+			#{memberGender},
+			#{memberLevel},
+			#{memberEmail}
+        )
+    </insert>
+    
+	<!-- 회원가입 밑작업 탈퇴 아이디 중복방지 매서드 -->
+	<select id="outSelectId"
+			parameterType="cafe.jjdev.mall.vo.Member"
+			resultType="int">
+		SELECT 
+        	COUNT(*) 
+        FROM 
+        	user
+      	WHERE
+      		user_id = #{memberId}
+	</select>
+
+	<!-- 회원가입 밑작업 가입중인 아이디 중복방지 매서드 -->
+	<select id="selectId"
+			parameterType="cafe.jjdev.mall.vo.Member"
+			resultType="int">
+		SELECT 
+        	COUNT(*) 
+        FROM 
+        	member
+      	WHERE
+      		member_id = #{memberId}
+	</select>
+
+
+	<!-- 로그인 매서드 -->
+    <select id="loginMember" 
+    		parameterType="cafe.jjdev.mall.vo.Member" 
+    		resultType="cafe.jjdev.mall.vo.Member">
+    		
+    	SELECT 
+			member_id as memberId,
+			member_pw as memberPw,
+			member_name as memberName,
+			member_phone as memberPhone,
+			member_address as memberAddress,
+			member_gender as memberGender,
+			member_level as memberLevel,
+			member_email as memberEmail
+	<!-- 뷰에 뭘 뿌려줄까... 일단 다가져와보자 -->		
+		FROM 
+			member
+			
+		WHERE 
+			member_id = #{memberId}
+		AND	
+			member_pw = #{memberPw}
+    </select>
+    
+</mapper>

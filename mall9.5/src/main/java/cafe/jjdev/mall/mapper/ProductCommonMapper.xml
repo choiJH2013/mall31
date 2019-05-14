@@ -1,0 +1,102 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cafe.jjdev.mall.mapper.ProductCommonMapper">
+	
+	<!-- 페이징작업 전체 개수 -->
+	<select id="selectProductCommonCount" resultType="int">
+        SELECT 
+        	COUNT(*) 
+        FROM 
+        	product_common
+    </select>
+	
+	
+	<!-- 2 -->
+	<!-- resultMap을 만들어서 담고 리턴 -->
+	<resultMap type="cafe.jjdev.mall.vo.ProductCommon" 
+				id="ProductCommonMap">
+			<!-- 프로덕터 커먼 하나와 -->
+        <result column="product_common_no" property="productCommonNo"/>
+		<result column="category_no" property="categoryNo"/>
+		<result column="product_common_name" property="productCommonName"/>
+		<result column="product_common_price" property="productCommonPrice"/>
+		<result column="product_common_description" property="productCommonDescription"/>
+		<result column="product_common_date" property="productCommonDate"/>
+		
+			
+				<!-- 프로덕터의 구성되는 여러개 -->	<!-- List<product> 타입 -->
+		<collection property="products" ofType="cafe.jjdev.mall.vo.Product">
+			<!-- id 프라이머리 키값 -->
+			<id column="product_no" property="productNo"/>
+			<result column="product_common_no" property="productCommonNo"/>
+			<result column="product_color" property="productColor"/>
+			<result column="product_size" property="productSize"/>
+			<result column="product_stock" property="productStock"/>
+		</collection>
+	
+	</resultMap>
+
+	<!-- join 쿼리문 -->
+	<select id="selectProductCommonByCategory"
+			parameterType="int"
+			resultMap="ProductCommonMap">
+			
+		SELECT
+			pc.product_common_no,
+			pc.category_no,
+			pc.product_common_name,
+			pc.product_common_price,
+			pc.product_common_description,
+			pc.product_common_date,
+			p.product_no,
+			p.product_common_no,
+			p.product_color,
+			p.product_size,
+			p.product_stock
+		FROM
+			product_common AS pc 
+		INNER JOIN 
+			product AS p
+		ON 
+			pc.product_common_no = p.product_common_no
+			
+	</select>
+    
+    <!-- 1 페이징,검색(이름), -->
+    <select id="selectProductCommonList"
+    		parameterType="java.util.Map"
+    		resultType="cafe.jjdev.mall.vo.ProductCommon">
+    	SELECT
+    		product_common_no AS productCommonNo,
+			category_no AS categoryNo,
+			product_common_name  AS productCommonName,
+			product_common_price  AS productCommonPrice,
+			product_common_description  AS productCommonDescription,
+			product_common_date  AS productCommonDate
+		FROM 
+			product_common	
+		WHERE
+			category_no = #{categoryNo}
+		<if test="searchWord != '%%'">
+		AND
+			product_common_name 
+		LIKE 
+			#{searchWord}
+		</if>
+		LIMIT
+			#{startRow}, #{rowPerPage}
+		<!-- LIMIT #{beginRow}, #{rowPerPage} -->
+		
+    </select>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</mapper>

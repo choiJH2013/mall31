@@ -1,0 +1,16 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="cafe.jjdev.mall.mapper.CateforyMapper">
+	<select id="selectCategoryList"
+			resultType="cafe.jjdev.mall.vo.Category">
+		SELECT
+			category_no AS categoryNo,
+			category_name AS categoryName
+		FROM	
+			category
+	</select>
+
+
+</mapper>
