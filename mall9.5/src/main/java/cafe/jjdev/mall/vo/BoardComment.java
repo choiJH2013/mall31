@@ -5,6 +5,7 @@ public class BoardComment {
 	private int boardNo;
 	private String boardCommentContent;
 	private String boardCommentUser;
+	
 	public int getBoardCommentNo() {
 		return boardCommentNo;
 	}
