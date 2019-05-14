@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>INDEX</h1>
-	<h3>쇼핑몰 메인 페이지</h3>
+	<h3>쇼핑몰 메인 페이지(github에서 수정...)</h3>
 	<div>
 		<ol>
 			<li><a href="/member/login">로그인</a></li>
