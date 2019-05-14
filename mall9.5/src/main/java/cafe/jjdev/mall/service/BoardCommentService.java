@@ -14,6 +14,7 @@ public class BoardCommentService {
 	private BoardCommentMapper boardCommentMapper;
 	
 	public int addBoardComment(BoardComment boardComment) {
+		
 		return boardCommentMapper.insertBoardComment(boardComment);
 	}
 }
