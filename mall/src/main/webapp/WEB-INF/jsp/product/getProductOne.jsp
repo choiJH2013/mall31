@@ -9,8 +9,9 @@
 	/* $ == jquery  document.getElementById('test') jQuery('#test') */
 	/* load 는 도큐먼트가 다만들어져야된다   ready태그만 읽혀지면된다- */
 	$(document).ready(function () {
-		$('#paymentBtn').click(function () {
-			$('#productForm').submit(); // 기능은 자바스크립트가 하는것
+		$('#productColor').click(function () {
+				$('#selectOptionFrom').submit(); // 기능은 자바스크립트가 하는것
+
 		});
 	});
 </script>
@@ -20,7 +21,7 @@
 	<c:if test="${pc.productCommonNo != null}">
 		<div>
 		    <h1>상품상세보기</h1>
-		    <form id="productForm" method="post" action="${pageContext.request.contextPath}/product/getProductOne">
+		    <form id="productForm" method="post" action="${pageContext.request.contextPath}/">
 				<table border=1>
 					<thead>	
 						<tr>
@@ -50,34 +51,133 @@
 					</thead>	
 				</table>
 			</form>	
-			<!-- 컬러표시  -->
-			<form id="selectColorFrom" action="${pageContext.request.contextPath}/product/getProductOne?productCommonNo=${pc.productCommonNo}" method="post">
-
-				<!-- select tag -->			
-				<select id="productColor" name="productColor">
-				
-					<!-- String color = "default" -->
-					<c:set var="color" value="default"></c:set>
-					
-					<!-- forEach문  -->
-					<c:forEach var="p" items="${products}">
-					
-						<!-- 조건 가져온 컬러중 컬러변수에 담긴값과 다를경우 -->
-						<c:if test="${p.productColor ne color}">
-						
-							<!-- 그 컬러값으로 옵션을 추가한다 -->
-							<option value="${p.productColor}">${p.productColor}</option>
-							
-							<%-- String color = 추가한 컬러값을담는다 for문 반복 다음if문에서 비교  --%>
-							<c:set var="color" value="${p.productColor}"></c:set>
-						
-						</c:if>
-						
-					</c:forEach>
-				</select>
-			</form>
 			
-			<!-- 그냥표시 -->	
+			<c:if test="${pO.productSize == null}">
+			
+			선택된 사이즈 : <input type="text" value="선택된 사이즈가 없습니다." readonly="readonly"><br>
+			선택된 컬러 : <input type="text" value="선택된 컬러가 없습니다." readonly="readonly">
+			
+				<!-- 컬러표시 및 선택옵션  -->
+				<form id="selectOptionFrom" action="${pageContext.request.contextPath}/product/getProductOne?productCommonNo=${pc.productCommonNo}" method="post">	
+
+					<!-- 상품사이즈 -->사이즈선택:
+					<select id="productSize" name="productSize">
+					
+						<!-- String color = "default" -->
+						<c:set var="size" value="0"></c:set>
+						
+						<!-- forEach문  -->
+						<c:forEach var="p" items="${products}">
+						
+							<!-- 조건 가져온 컬러중 컬러변수에 담긴값과 다를경우 -->
+							<c:if test="${p.productSize ne size}">
+							
+								<!-- 그 컬러값으로 옵션을 추가한다 -->
+								<option value="${p.productSize}">${p.productSize}</option>
+								
+								<%-- String color = 추가한 컬러값을담는다 for문 반복 다음if문에서 비교  --%>
+								<c:set var="size" value="${p.productSize}"></c:set>
+							
+							</c:if>
+							
+						</c:forEach>
+					</select>
+			
+					<!-- select tag -->컬러선택:	
+					<select id="productColor" name="productColor">
+					
+						<!-- String color = "default" -->
+						<c:set var="color" value="default"></c:set>
+						
+						<!-- forEach문  -->
+						<c:forEach var="p" items="${products}">
+						
+							<!-- 조건 가져온 컬러중 컬러변수에 담긴값과 다를경우 -->
+							<c:if test="${p.productColor ne color}">
+							
+								<!-- 그 컬러값으로 옵션을 추가한다 -->
+								<option value="${p.productColor}">${p.productColor}</option>
+
+								<%-- String color = 추가한 컬러값을담는다 for문 반복 다음if문에서 비교  --%>
+								<c:set var="color" value="${p.productColor}"></c:set>
+							
+							</c:if>
+							
+						</c:forEach>
+					</select>
+					
+				</form>
+				
+			</c:if>
+		
+			
+		<c:if test="${pO.productSize != null}">
+			
+			선택된 사이즈<input type="text" value="${pO.productSize}" readonly="readonly"><br>
+			선택된 컬러<input type="text" value="${pO.productColor}" readonly="readonly">
+			
+			
+			
+				<!-- 컬러표시 및 선택옵션  -->
+				<form id="selectOptionFrom" action="${pageContext.request.contextPath}/product/getProductOne?productCommonNo=${pc.productCommonNo}" method="post">
+			
+				<!-- 상품사이즈 -->사이즈선택 : 
+					<select id="productSize" name="productSize">
+						
+						<!-- String color = "default" -->
+						<c:set var="size" value="0"></c:set>
+						
+						<!-- forEach문  -->
+						<c:forEach var="p" items="${products}">
+						
+							<!-- 조건 가져온 컬러중 컬러변수에 담긴값과 다를경우 -->
+							<c:if test="${p.productSize ne size}">
+							
+								<!-- 그 컬러값으로 옵션을 추가한다 -->
+								<option value="${p.productSize}">${p.productSize}</option>
+								
+								<%-- String color = 추가한 컬러값을담는다 for문 반복 다음if문에서 비교  --%>
+								<c:set var="size" value="${p.productSize}"></c:set>
+							
+							</c:if>
+							
+						</c:forEach>
+					</select>
+				
+					<!-- select tag -->	컬러선택 : 		
+					<select id="productColor" name="productColor">
+					
+						<!-- String color = "default" -->
+						<c:set var="color" value="default"></c:set>
+						
+						<!-- forEach문  -->
+						<c:forEach var="p" items="${products}">
+						
+							<!-- 조건 가져온 컬러중 컬러변수에 담긴값과 다를경우 -->
+							<c:if test="${p.productColor ne color}">
+							
+								<!-- 그 컬러값으로 옵션을 추가한다 -->
+								<option value="${p.productColor}">${p.productColor}</option>
+								
+								<%-- String color = 추가한 컬러값을담는다 for문 반복 다음if문에서 비교  --%>
+								<c:set var="color" value="${p.productColor}"></c:set>
+							
+							</c:if>
+							
+						</c:forEach>
+					</select>
+					
+				</form>
+			
+			</c:if>
+			
+			
+			
+			
+			
+			
+			<br><br>
+			<!-- 그냥표시 -->현재 재고량	
 				<table border="1">		
 					<tr>
 						<td width="10%">컬러</td>

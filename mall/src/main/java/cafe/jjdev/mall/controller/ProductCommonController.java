@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import cafe.jjdev.mall.commons.PathStr;
@@ -16,33 +17,46 @@ import cafe.jjdev.mall.vo.ProductCommon;
 
 @Controller
 public class ProductCommonController {
-	
 	@Autowired
 	private ProductCommonService productCommonService;
 	
 	@GetMapping("/product/getProductOne")
-	public String getProductOne(Model model,int productCommonNo) {
-		System.out.println("컨트롤 상세보기 실행");
-		System.out.println("컨트롤 productCommonNo : " + productCommonNo);
+	public String getProductOne(Model model,int productCommonNo,@RequestParam(value="productSize", defaultValue="0") int productSize,String productColor) {
+		System.out.println("컨트롤  get 상세보기 실행");
+		System.out.println("컨트롤 productCommonNo : " + productCommonNo +" String 컬러 : "+ productColor+" int 사이즈 : " + productSize);
+
 		ProductCommon pc = productCommonService.getProductCommonByCategoryOne(productCommonNo);
 		System.out.println("●●●●●●●●●●컨트롤 상품 상세보기●●●●●●●●●●●●");
 		System.out.println("컨트롤 pc : " + pc);
 		System.out.println("●●●●●●●●●●컨트롤 상품 상세보기●●●●●●●●●●●●");
+		
 		model.addAttribute("pc", pc);	
 		model.addAttribute("path", PathStr.PRODUCT_IMG_PATH);
+		
 		if(pc != null) {
 			List<Product> products = pc.getProducts();
-			
 			System.out.println("컨트롤러 db색상,사이즈 옵션의 개수 : " + products.size());
 			System.out.println("컨트롤러 products : " + products);
 			model.addAttribute("products", products);
 		}
 		
+		if(productColor != null) {
+			if(productSize != 0) {
+				Product productOption = productCommonService.productOption(productColor,productSize);
+				model.addAttribute("pO", productOption);
+				return "/product/getProductOne";
+			}
+		}
 		
 		return "/product/getProductOne";
-		
 	}
 	
+	@PostMapping("/product/getProductOne")
+	public String getProductOne(int productCommonNo,int productSize,String productColor) {
+		System.out.println("int코몬넘버 : " + productCommonNo +" String 컬러 : "+ productColor + "int 사이즈 : " + productSize);
+		
+		return "redirect:" + "/product/getProductOne?productCommonNo="+productCommonNo+"&productColor="+productColor+"&productSize="+productSize;
+	}
 	
 	@GetMapping("/product/getProductListByCategory")
 	public String getProductCommonListByCategoryNo(Model model,@RequestParam(value = "categoryNo", defaultValue = "1" ) int categoryNo,

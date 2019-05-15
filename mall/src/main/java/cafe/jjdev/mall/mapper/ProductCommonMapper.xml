@@ -2,6 +2,23 @@
  
 <mapper namespace="cafe.jjdev.mall.mapper.ProductCommonMapper">
 	
+	
+	<!-- 상품 옵션 -->
+	<select id="productOption"
+			parameterType="java.util.Map"
+			resultType="cafe.jjdev.mall.vo.Product">
+		SELECT
+			product_color AS productColor,
+			product_size AS productSize,
+			product_stock AS productStock
+		FROM
+			product
+		WHERE
+			product_color = #{productColor}
+		AND
+			product_size = #{productSize}	
+	</select>
+	
 	<!-- 페이징작업 전체 개수 -->
 	<select id="selectProductCommonCount" resultType="int">
         SELECT 
@@ -9,8 +26,7 @@
         FROM 
         	product_common
     </select>
-	
-	
+    
 	<!-- 2 -->
 	<!-- resultMap을 만들어서 담고 리턴 -->
 	<resultMap type="cafe.jjdev.mall.vo.ProductCommon" 
@@ -60,6 +76,7 @@
 			pc.product_common_no = p.product_common_no
 		WHERE
 			pc.product_common_no = #{productCommonNo}
+
 		ORDER BY 
 			p.product_color,
 			p.product_size asc	

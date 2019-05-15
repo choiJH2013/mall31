@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import cafe.jjdev.mall.mapper.ProductCommonMapper;
+import cafe.jjdev.mall.vo.Product;
 import cafe.jjdev.mall.vo.ProductCommon;
 
 @Service
@@ -17,16 +18,25 @@ public class ProductCommonService {
 	@Autowired
 	private ProductCommonMapper productCommonMapper;
 	
+	
+	
+	public Product productOption(String productColor,int productSize) {
+		System.out.println("서비스 옵션선택 매서드 컬러 : " + productColor);
+		System.out.println("서비스 옵션선택 매서드 사이즈 : " + productSize);
+		
+		Map<String, Object> map = new HashMap<String, Object> ();
+		map.put("productColor", productColor);
+		map.put("productSize", productSize);
+		
+		return productCommonMapper.productOption(map);
+	}
+	
 	public ProductCommon getProductCommonByCategoryOne(int productCommonNo) {
-		
 		System.out.println("서비스 productCommonNo : " + productCommonNo);
-		
 		return productCommonMapper.selectProductCommonByCategory(productCommonNo);
 		
 			
-	}
-	
-	
+	}	
 	//접근지정자 //리턴데이터타입	   //메소드명						//입력데이터타입 // 매개변수
 	public Map<String, Object> getProductCommonListByCategoryNo(int categoryNo, int currentPage, String searchWord) {
 		System.out.println("프로덕트 서비스 시작");
