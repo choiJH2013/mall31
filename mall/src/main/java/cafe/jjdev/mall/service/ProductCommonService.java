@@ -17,6 +17,16 @@ public class ProductCommonService {
 	@Autowired
 	private ProductCommonMapper productCommonMapper;
 	
+	public ProductCommon getProductCommonByCategoryOne(int productCommonNo) {
+		
+		System.out.println("서비스 productCommonNo : " + productCommonNo);
+		
+		return productCommonMapper.selectProductCommonByCategory(productCommonNo);
+		
+			
+	}
+	
+	
 	//접근지정자 //리턴데이터타입	   //메소드명						//입력데이터타입 // 매개변수
 	public Map<String, Object> getProductCommonListByCategoryNo(int categoryNo, int currentPage, String searchWord) {
 		System.out.println("프로덕트 서비스 시작");
@@ -66,5 +76,11 @@ public class ProductCommonService {
 		
 		return resultmap;
 	}
+	
+	
+	
+
+	
+	
 	
 }

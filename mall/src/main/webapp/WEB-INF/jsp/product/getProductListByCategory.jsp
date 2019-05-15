@@ -37,7 +37,7 @@
 		                    <td>${list.productCommonNo}</td>
 		                    <td>${list.categoryNo}</td>
 		                    <td>
-		                    	<a href="${pageContext.request.contextPath}/priduct/getProductOne?${list.productCommonNo}">
+		                    	<a href="${pageContext.request.contextPath}/product/getProductOne?productCommonNo=${list.productCommonNo}">
 		                    		${list.productCommonName}
 		                    	</a>
 		                    </td>

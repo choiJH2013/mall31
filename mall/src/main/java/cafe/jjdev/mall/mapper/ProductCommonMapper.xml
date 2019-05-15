@@ -60,6 +60,9 @@
 			pc.product_common_no = p.product_common_no
 		WHERE
 			pc.product_common_no = #{productCommonNo}
+		ORDER BY 
+			p.product_color,
+			p.product_size asc	
 	</select>
     
     <!-- 1 페이징,검색(이름), -->
