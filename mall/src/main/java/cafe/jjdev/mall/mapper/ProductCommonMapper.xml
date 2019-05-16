@@ -1,23 +1,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="cafe.jjdev.mall.mapper.ProductCommonMapper">
-	
-	
-	<!-- 상품 옵션 -->
-	<select id="productOption"
-			parameterType="java.util.Map"
-			resultType="cafe.jjdev.mall.vo.Product">
-		SELECT
-			product_color AS productColor,
-			product_size AS productSize,
-			product_stock AS productStock
-		FROM
-			product
-		WHERE
-			product_color = #{productColor}
-		AND
-			product_size = #{productSize}	
-	</select>
+
+
+
 	
 	<!-- 페이징작업 전체 개수 -->
 	<select id="selectProductCommonCount" resultType="int">
@@ -54,7 +40,7 @@
 
 	<!-- join쿼리문 / categoryNo조건 / 쿼리문 결과값 1:N -->
 	<select id="selectProductCommonByCategory"
-			parameterType="int"
+			parameterType="cafe.jjdev.mall.vo.Product"
 			resultMap="ProductCommonMap">
 		SELECT
 			pc.product_common_no,
@@ -73,13 +59,18 @@
 		INNER JOIN 
 			product AS p
 		ON 
-			pc.product_common_no = p.product_common_no
+			pc.product_common_no = p.product_common_no		
 		WHERE
 			pc.product_common_no = #{productCommonNo}
-
+		
+		<if test="productColor != null">
+		AND 
+			p.product_color = #{productColor}
+		</if>
+		
 		ORDER BY 
-			p.product_color,
-			p.product_size asc	
+			p.product_color ASC,
+			p.product_size
 	</select>
     
     <!-- 1 페이징,검색(이름), -->

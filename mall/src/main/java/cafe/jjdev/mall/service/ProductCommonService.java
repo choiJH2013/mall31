@@ -20,23 +20,23 @@ public class ProductCommonService {
 	
 	
 	
-	public Product productOption(String productColor,int productSize) {
-		System.out.println("서비스 옵션선택 매서드 컬러 : " + productColor);
-		System.out.println("서비스 옵션선택 매서드 사이즈 : " + productSize);
-		
-		Map<String, Object> map = new HashMap<String, Object> ();
-		map.put("productColor", productColor);
-		map.put("productSize", productSize);
-		
-		return productCommonMapper.productOption(map);
+	
+
+	
+	public ProductCommon productOption(Product product) {
+		System.out.println("서비스 컬러선택 매서드 : " + product);
+		return productCommonMapper.selectProductCommonByCategory(product);
 	}
 	
-	public ProductCommon getProductCommonByCategoryOne(int productCommonNo) {
-		System.out.println("서비스 productCommonNo : " + productCommonNo);
-		return productCommonMapper.selectProductCommonByCategory(productCommonNo);
+	public ProductCommon getProductCommonByCategoryOne(Product product) {
+		System.out.println("서비스 productCommonNo : " + product);
+		ProductCommon pc = productCommonMapper.selectProductCommonByCategory(product);		
 		
-			
+		System.out.println("서비스 " + pc);
+		
+		return pc;
 	}	
+	
 	//접근지정자 //리턴데이터타입	   //메소드명						//입력데이터타입 // 매개변수
 	public Map<String, Object> getProductCommonListByCategoryNo(int categoryNo, int currentPage, String searchWord) {
 		System.out.println("프로덕트 서비스 시작");

@@ -15,21 +15,21 @@
 	빈 엘리먼트로 호출 : $().ready(handler);
 	또는 특정 엘리먼트 없이 바로 호출 : $(handler); */
 	
-
-	$('#productColor').change(function () {
-		$('#selectOptionColorFrom').submit();
+	$(document).ready(function () {
+	
+		$('#productColor').change(function () {
+			$('#selectOptionColorFrom').submit();
+			
+		$('#productSize').change(function () {
+			$('#selectOptionSizeFrom').submit();  // 기능은 자바스크립트가 하는것
+		});
 	});
-
-		
 </script>
 
 <title>상품상세보기</title>
 </head>
 <body>
 	<c:if test="${pc.productCommonNo != null}">
-		
-		<c:if test="${pO == null}">
-
 		<div>
 		    <h1>상품상세보기</h1>
 		    <form id="productForm" method="post" action="${pageContext.request.contextPath}/">
@@ -63,17 +63,17 @@
 				</table>
 			</form>	
 			
-	<c:if test="${pO.productColor == null}">
+	<c:if test="${pCO.productColor == null}">
 		선택된 컬러 : <input type="text" value="선택된 컬러가 없습니다." readonly="readonly">
 	</c:if>
-	<c:if test="${pO.productSize == null}">
+	<c:if test="${pSO.productSize == null}">
 		선택된 사이즈 : <input type="text" value="선택된 사이즈가 없습니다." readonly="readonly">
 	</c:if>		
 			
-	<c:if test="${pO.productColor != null}">
+	<c:if test="${pCO.productColor != null}">
 	선택된 컬러<input type="text" value="${pO.productColor}" readonly="readonly">
 	</c:if>
-	<c:if test="${pO.productSize != null}">
+	<c:if test="${pSO.productSize != null}">
 	선택된 사이즈<input type="text" value="${pO.productSize}" readonly="readonly">
 	</c:if>
 
@@ -106,7 +106,7 @@
 		
 	</form>
 	
-	<c:if test="pO != null">
+	<c:if test="pCO != null">
 		
 		<!-- 사이즈표시 및 선택옵션 폼  -->
 		<form id="selectOptionSizeFrom" action="${pageContext.request.contextPath}/product/getProductOne?productCommonNo=${pc.productCommonNo}" method="post">	
@@ -118,16 +118,16 @@
 				<c:set var="size" value="0"></c:set>
 				
 				<!-- forEach문  -->
-				<c:forEach var="pO" items="${pO}">
+				<c:forEach var="p" items="${products}">
 				
 					<!-- 조건 가져온 컬러중 컬러변수에 담긴값과 다를경우 -->
-					<c:if test="${pO.productSize ne size}">
+					<c:if test="${p.productSize ne size}">
 					
 						<!-- 그 컬러값으로 옵션을 추가한다 -->
-						<option value="${pO.productSize}">${pO.productSize}</option>
+						<option value="${p.productSize}">${p.productSize}</option>
 						
 						<%-- String color = 추가한 컬러값을담는다 for문 반복 다음if문에서 비교  --%>
-						<c:set var="size" value="${pO.productSize}"></c:set>
+						<c:set var="size" value="${p.productSize}"></c:set>
 					
 					</c:if>
 					
@@ -179,9 +179,7 @@
 			<button id="paymentBtn" type="button">결제하기</button>
 		</div>
 	</c:if>
-	</c:if>
 	
-	성공?
 	
 	<c:if test="${pc.productCommonNo == null}">
 		<h1>현재 상품 준비중 입니다</h1>

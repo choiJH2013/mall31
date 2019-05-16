@@ -19,44 +19,48 @@ import cafe.jjdev.mall.vo.ProductCommon;
 public class ProductCommonController {
 	@Autowired
 	private ProductCommonService productCommonService;
+
+	
 	
 	@GetMapping("/product/getProductOne")
-	public String getProductOne(Model model,int productCommonNo,@RequestParam(value="productSize", defaultValue="0") int productSize,String productColor) {
+	public String getProductOne(Model model,Product product) {
 		System.out.println("컨트롤  get 상세보기 실행");
-		System.out.println("컨트롤 productCommonNo : " + productCommonNo +" String 컬러 : "+ productColor+" int 사이즈 : " + productSize);
-
-		ProductCommon pc = productCommonService.getProductCommonByCategoryOne(productCommonNo);
+		
+		ProductCommon pc = productCommonService.getProductCommonByCategoryOne(product);
 		System.out.println("●●●●●●●●●●컨트롤 상품 상세보기●●●●●●●●●●●●");
 		System.out.println("컨트롤 pc : " + pc);
 		System.out.println("●●●●●●●●●●컨트롤 상품 상세보기●●●●●●●●●●●●");
 		
 		model.addAttribute("pc", pc);	
 		model.addAttribute("path", PathStr.PRODUCT_IMG_PATH);
-		
-		if(pc != null) {
+				
+		if(pc.getProductCommonNo() != 0) {
 			List<Product> products = pc.getProducts();
 			System.out.println("컨트롤러 db색상,사이즈 옵션의 개수 : " + products.size());
 			System.out.println("컨트롤러 products : " + products);
 			model.addAttribute("products", products);
-		}
-		
-		if(productColor != null) {
-			if(productSize != 0) {
-				Product productOption = productCommonService.productOption(productColor,productSize);
-				model.addAttribute("pO", productOption);
-				return "/product/getProductOne";
-			}
+			model.addAttribute("pc", pc);
 		}
 		
 		return "/product/getProductOne";
 	}
 	
 	@PostMapping("/product/getProductOne")
-	public String getProductOne(int productCommonNo,int productSize,String productColor) {
-		System.out.println("int코몬넘버 : " + productCommonNo +" String 컬러 : "+ productColor + "int 사이즈 : " + productSize);
+	public String getProductOne2(Model model,Product product) {
+
 		
-		return "redirect:" + "/product/getProductOne?productCommonNo="+productCommonNo+"&productColor="+productColor+"&productSize="+productSize;
+		if(product != null) {
+			System.out.println("컬러 실행");
+			ProductCommon productOption = productCommonService.productOption(product);
+			System.out.println("productOption : " + productOption);
+			model.addAttribute("pO", productOption);			
+			
+		}
+
+		return "/product/getProductOne";
 	}
+	
+	
 	
 	@GetMapping("/product/getProductListByCategory")
 	public String getProductCommonListByCategoryNo(Model model,@RequestParam(value = "categoryNo", defaultValue = "1" ) int categoryNo,
